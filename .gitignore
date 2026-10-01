@@ -1,0 +1,47 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+# Virtual environments
+.venv/
+venv/
+env/
+# Environment secrets
+.env
+.env.*
+!.env.example
+# Frontend
+frontend/node_modules/
+frontend/dist/
+# Build artifacts
+dist/
+build/
+*.egg-info/
+# Models / large ML files
+models/
+*.bin
+*.safetensors
+*.pt
+*.pth
+# IDE
+.vscode/
+.idea/
+# OS
+.DS_Store
+Thumbs.db
+# Logs
+*.log
+# Docker
+docker-compose.override.yml
+
+.venv/
+
+**/.venv/
+
+backend/.venv/
+frontend/node_modules/
+
+# Uploaded documents
+backend/uploads/

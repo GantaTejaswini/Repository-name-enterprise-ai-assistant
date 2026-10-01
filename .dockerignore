@@ -1,0 +1,17 @@
+﻿.venv
+.git
+.github
+frontend/node_modules
+frontend/dist
+backend/__pycache__
+backend/.pytest_cache
+backend/tests
+backend/evaluation
+models
+elasticsearch
+postgres
+*.pyc
+*.pyo
+*.log
+.env
+**/.env
