@@ -1,5 +1,6 @@
 from fastapi import Request
 from redis.asyncio import Redis
+from redis.exceptions import RedisError
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 
@@ -19,6 +20,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.redis = Redis.from_url(
             settings.redis_url,
             decode_responses=True,
+            socket_connect_timeout=1,
+            socket_timeout=1,
         )
 
     async def dispatch(
@@ -27,21 +30,26 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         call_next,
     ):
         client_ip = request.client.host
-
         redis_key = f"rate_limit:{client_ip}"
 
-        current_count = await self.redis.incr(redis_key)
+        try:
+            current_count = await self.redis.incr(redis_key)
 
-        if current_count == 1:
-            await self.redis.expire(redis_key, 60)
+            if current_count == 1:
+                await self.redis.expire(redis_key, 60)
 
-        if current_count > self.requests_per_minute:
-            return JSONResponse(
-                status_code=429,
-                content={
-                    "detail": "Rate limit exceeded. Please try again later."
-                },
-            )
+            if current_count > self.requests_per_minute:
+                return JSONResponse(
+                    status_code=429,
+                    content={
+                        "detail": "Rate limit exceeded. Please try again later."
+                    },
+                )
+
+        except (RedisError, TimeoutError, OSError):
+            # Redis is unavailable.
+            # Fail open so the application remains usable.
+            pass
 
         response = await call_next(request)
 

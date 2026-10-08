@@ -6,7 +6,7 @@ from pdf2image import convert_from_path
 from pypdf import PdfReader
 
 
-CHUNK_SIZE = 500
+CHUNK_SIZE = 700
 CHUNK_OVERLAP = 100
 
 TESSERACT_PATH = (
@@ -152,23 +152,100 @@ class DocumentService:
             text,
         )
 
-        # Convert remaining line breaks to spaces.
-        text = re.sub(
-            r"\s*\n\s*",
-            " ",
-            text,
-        )
-
-        # Normalize repeated whitespace.
+        # Preserve useful paragraph/list boundaries.
         text = re.sub(
             r"[ \t]+",
             " ",
             text,
         )
 
+        text = re.sub(
+            r"\n{3,}",
+            "\n\n",
+            text,
+        )
+
         text = text.strip()
 
         return text
+
+    def _split_long_block(
+        self,
+        text: str,
+    ) -> list[str]:
+        words = text.split()
+
+        if not words:
+            return []
+
+        chunks = []
+        current_words = []
+        current_length = 0
+
+        for word in words:
+            additional_length = len(word)
+
+            if current_words:
+                additional_length += 1
+
+            if (
+                current_words
+                and current_length + additional_length
+                > CHUNK_SIZE
+            ):
+                chunks.append(
+                    " ".join(current_words).strip()
+                )
+
+                overlap_words = []
+                overlap_length = 0
+
+                for previous_word in reversed(
+                    current_words
+                ):
+                    word_length = len(previous_word)
+
+                    if overlap_words:
+                        word_length += 1
+
+                    if (
+                        overlap_length + word_length
+                        > CHUNK_OVERLAP
+                    ):
+                        break
+
+                    overlap_words.insert(
+                        0,
+                        previous_word,
+                    )
+
+                    overlap_length += word_length
+
+                current_words = overlap_words.copy()
+
+                current_length = sum(
+                    len(item)
+                    for item in current_words
+                )
+
+                if current_words:
+                    current_length += (
+                        len(current_words) - 1
+                    )
+
+            current_words.append(word)
+
+            if len(current_words) == 1:
+                current_length = len(word)
+            else:
+                current_length += len(word) + 1
+
+        if current_words:
+            chunks.append(
+                " ".join(current_words).strip()
+            )
+
+        return chunks
 
     def chunk_text(
         self,
@@ -178,49 +255,78 @@ class DocumentService:
         chunks = []
 
         for page in pages:
-
             page_number = page["page_number"]
             text = page["text"].strip()
 
             if not text:
                 continue
 
-            words = text.split()
+            # Split on paragraph-like boundaries first.
+            # This helps preserve sections and lists.
+            blocks = re.split(
+                r"\n\s*\n+",
+                text,
+            )
 
-            if not words:
-                continue
+            page_blocks = []
 
-            current_words = []
-            current_length = 0
+            for block in blocks:
+                block = block.strip()
 
-            chunk_word_lists = []
+                if not block:
+                    continue
 
-            for word in words:
+                page_blocks.append(block)
 
-                additional_length = len(word)
+            current_block_words = []
+            current_block_length = 0
 
-                if current_words:
-                    additional_length += 1
+            for block in page_blocks:
+                block_words = block.split()
 
+                if not block_words:
+                    continue
+
+                block_length = len(block)
+
+                # If adding the complete logical block keeps
+                # the chunk within the target size, keep it intact.
                 if (
-                    current_words
-                    and current_length
-                    + additional_length
-                    > CHUNK_SIZE
+                    current_block_words
+                    and current_block_length
+                    + 1
+                    + block_length
+                    <= CHUNK_SIZE
                 ):
-                    chunk_word_lists.append(
-                        current_words
+                    current_block_words.extend(
+                        block_words
                     )
+                    current_block_length += (
+                        1 + block_length
+                    )
+                    continue
+
+                # Flush the current logical chunk.
+                if current_block_words:
+                    chunk_content = " ".join(
+                        current_block_words
+                    ).strip()
+
+                    if chunk_content:
+                        chunks.append(
+                            {
+                                "page_number": page_number,
+                                "content": chunk_content,
+                            }
+                        )
 
                     overlap_words = []
                     overlap_length = 0
 
                     for previous_word in reversed(
-                        current_words
+                        current_block_words
                     ):
-                        word_length = len(
-                            previous_word
-                        )
+                        word_length = len(previous_word)
 
                         if overlap_words:
                             word_length += 1
@@ -239,50 +345,72 @@ class DocumentService:
 
                         overlap_length += word_length
 
-                    current_words = (
+                    current_block_words = (
                         overlap_words.copy()
                     )
 
-                    current_length = sum(
-                        len(item)
-                        for item in current_words
+                    current_block_length = sum(
+                        len(word)
+                        for word in current_block_words
                     )
 
-                    if current_words:
-                        current_length += (
-                            len(current_words) - 1
+                    if current_block_words:
+                        current_block_length += (
+                            len(current_block_words) - 1
                         )
 
-                current_words.append(word)
-
-                if len(current_words) == 1:
-                    current_length = len(word)
-                else:
-                    current_length += (
-                        len(word) + 1
+                # Keep a logical block intact when possible.
+                if block_length <= CHUNK_SIZE:
+                    current_block_words.extend(
+                        block_words
+                    )
+                    current_block_length += (
+                        block_length
+                        if not current_block_words[
+                            : -len(block_words)
+                        ]
+                        else block_length
                     )
 
-            if current_words:
-                chunk_word_lists.append(
-                    current_words
-                )
+                    if (
+                        len(current_block_words)
+                        > len(block_words)
+                    ):
+                        current_block_length += 1
 
-            for word_list in chunk_word_lists:
+                else:
+                    # A very large logical block must still
+                    # be safely split.
+                    long_chunks = self._split_long_block(
+                        block
+                    )
 
-                chunk_content = (
-                    " ".join(word_list)
-                    .strip()
-                )
+                    for long_chunk in long_chunks:
+                        if not long_chunk:
+                            continue
 
-                if not chunk_content:
-                    continue
+                        chunks.append(
+                            {
+                                "page_number": page_number,
+                                "content": long_chunk,
+                            }
+                        )
 
-                chunks.append(
-                    {
-                        "page_number": page_number,
-                        "content": chunk_content,
-                    }
-                )
+                    current_block_words = []
+                    current_block_length = 0
+
+            if current_block_words:
+                chunk_content = " ".join(
+                    current_block_words
+                ).strip()
+
+                if chunk_content:
+                    chunks.append(
+                        {
+                            "page_number": page_number,
+                            "content": chunk_content,
+                        }
+                    )
 
         print(
             f"Created {len(chunks)} "

@@ -4,76 +4,76 @@
   "model": "nvidia/llama-nemotron-embed-1b-v2",
   "llm_provider": "extractive",
   "tenant_id": "9984bc36-f841-44bd-899a-2a62c755f5ec",
-  "mean_token_overlap": 0.4338866930171278,
-  "mean_expected_phrase_coverage": 0.6933333333333334,
+  "mean_token_overlap": 0.5257048748353096,
+  "mean_expected_phrase_coverage": 0.8133333333333332,
   "mean_grounding_score": 0.9967213114754099,
   "cases": [
     {
       "question": "What programming skills are listed?",
       "reference_answer": "The programming skills listed are Python, MySQL, C, Java, and PHP.",
-      "generated_answer": "Python, MySQL, C, Java,",
+      "generated_answer": "Python, MySQL, Java,",
       "retrieved_chunks": [
-        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-2",
+        "a863a03b-3f51-4aff-9875-731870aede3b-chunk-2",
+        "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-3",
         "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-3",
-        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-4",
-        "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-4",
-        "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-2"
+        "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-6",
+        "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-3"
       ],
       "sources": [
         {
-          "document": "Ganta Tejjuuuuu resume.pdf",
+          "document": "Ganta Tejaswini_AI&DS_VIT (2).pdf",
           "page": 1,
-          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-2",
-          "rrf_score": 0.08761904761904762
+          "chunk_id": "a863a03b-3f51-4aff-9875-731870aede3b-chunk-2",
+          "rrf_score": 0.08347826086956522
+        },
+        {
+          "document": "Assignment12.pdf",
+          "page": 1,
+          "chunk_id": "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-3",
+          "rrf_score": 0.047619047619047616
         },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 1,
           "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-3",
-          "rrf_score": 0.08761904761904762
+          "rrf_score": 0.047619047619047616
+        },
+        {
+          "document": "Assignment12.pdf",
+          "page": 2,
+          "chunk_id": "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-6",
+          "rrf_score": 0.045454545454545456
         },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 1,
-          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-4",
-          "rrf_score": 0.08695652173913043
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 1,
-          "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-4",
-          "rrf_score": 0.08333333333333333
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 1,
-          "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-2",
+          "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-3",
           "rrf_score": 0.045454545454545456
         }
       ],
       "metrics": {
         "exact_match": 0.0,
-        "token_overlap": 0.36363636363636365,
-        "expected_phrase_coverage": 0.8,
+        "token_overlap": 0.2727272727272727,
+        "expected_phrase_coverage": 0.6,
         "grounding_score": 1.0
       },
       "timing": {
-        "embedding_seconds": 1.168,
-        "bm25_seconds": 0.053,
-        "knn_seconds": 0.071,
+        "embedding_seconds": 0.67,
+        "bm25_seconds": 0.024,
+        "knn_seconds": 0.031,
         "rrf_seconds": 0.0,
-        "total_seconds": 1.292,
-        "generation_seconds": 0.008
+        "total_seconds": 0.724,
+        "generation_seconds": 0.004
       }
     },
     {
       "question": "Which machine learning and deep learning algorithms are listed?",
       "reference_answer": "The listed algorithms include Logistic Regression, Decision Tree, Random Forest, SVM, KNN, Naive Bayes, CNN, RNN, LSTM, and Attention Mechanism.",
-      "generated_answer": "Developed a machine learning model for a CKD symptom checker, achieving high accuracy in detecting potential cases based on user symptoms. \u2022",
+      "generated_answer": "Logistic Regression, Decision Tree, Random Forest, SVM, KNN, Na\u00efve Baiyes, CNN, RNN, LSTM,",
       "retrieved_chunks": [
         "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-3",
+        "a863a03b-3f51-4aff-9875-731870aede3b-chunk-3",
         "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-3",
-        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
         "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-4",
         "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-4"
       ],
@@ -82,46 +82,46 @@
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 1,
           "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-3",
-          "rrf_score": 0.09109730848861283
+          "rrf_score": 0.08928571428571427
+        },
+        {
+          "document": "Ganta Tejaswini_AI&DS_VIT (2).pdf",
+          "page": 1,
+          "chunk_id": "a863a03b-3f51-4aff-9875-731870aede3b-chunk-3",
+          "rrf_score": 0.08761904761904762
         },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 1,
           "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-3",
-          "rrf_score": 0.08712121212121213
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 2,
-          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
-          "rrf_score": 0.08
+          "rrf_score": 0.08545454545454545
         },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 1,
           "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-4",
-          "rrf_score": 0.047619047619047616
+          "rrf_score": 0.045454545454545456
         },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 1,
           "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-4",
-          "rrf_score": 0.045454545454545456
+          "rrf_score": 0.043478260869565216
         }
       ],
       "metrics": {
         "exact_match": 0.0,
-        "token_overlap": 0.0,
-        "expected_phrase_coverage": 0.0,
+        "token_overlap": 0.55,
+        "expected_phrase_coverage": 0.8,
         "grounding_score": 1.0
       },
       "timing": {
-        "embedding_seconds": 1.783,
-        "bm25_seconds": 0.026,
-        "knn_seconds": 0.114,
+        "embedding_seconds": 1.015,
+        "bm25_seconds": 0.017,
+        "knn_seconds": 0.072,
         "rrf_seconds": 0.0,
-        "total_seconds": 1.922,
-        "generation_seconds": 0.007
+        "total_seconds": 1.105,
+        "generation_seconds": 0.004
       }
     },
     {
@@ -129,42 +129,42 @@
       "reference_answer": "The certifications listed are Cloud Computing from NPTEL IIT Kharagpur, AI First Software Engineering, and AWS Cloud Practitioner Essentials.",
       "generated_answer": "\u2022 Cloud Computing, NPTEL, IIT Kharagpur. NOV 2024 \u2022 AI First Software Engineering Feb 2025 \u2022 AWS Cloud Practitioner Essentials Nov 2024",
       "retrieved_chunks": [
+        "a863a03b-3f51-4aff-9875-731870aede3b-chunk-3",
+        "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-3",
+        "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-6",
         "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-4",
-        "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-4",
-        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-2",
-        "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-2",
-        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-3"
+        "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-4"
       ],
       "sources": [
+        {
+          "document": "Ganta Tejaswini_AI&DS_VIT (2).pdf",
+          "page": 1,
+          "chunk_id": "a863a03b-3f51-4aff-9875-731870aede3b-chunk-3",
+          "rrf_score": 0.08761904761904762
+        },
+        {
+          "document": "Assignment12.pdf",
+          "page": 1,
+          "chunk_id": "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-3",
+          "rrf_score": 0.047619047619047616
+        },
+        {
+          "document": "Assignment12.pdf",
+          "page": 2,
+          "chunk_id": "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-6",
+          "rrf_score": 0.045454545454545456
+        },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 1,
           "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-4",
-          "rrf_score": 0.09523809523809523
+          "rrf_score": 0.045454545454545456
         },
         {
-          "document": "Ganta Tejjuuuuu resume.pdf",
+          "document": "Assignment12.pdf",
           "page": 1,
-          "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-4",
-          "rrf_score": 0.09090909090909091
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 1,
-          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-2",
+          "chunk_id": "f33603fe-c766-4fc4-8fad-289b21fc6445-chunk-4",
           "rrf_score": 0.043478260869565216
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 1,
-          "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-2",
-          "rrf_score": 0.041666666666666664
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 1,
-          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-3",
-          "rrf_score": 0.04
         }
       ],
       "metrics": {
@@ -174,12 +174,12 @@
         "grounding_score": 1.0
       },
       "timing": {
-        "embedding_seconds": 1.132,
-        "bm25_seconds": 0.022,
-        "knn_seconds": 0.145,
+        "embedding_seconds": 0.58,
+        "bm25_seconds": 0.014,
+        "knn_seconds": 0.072,
         "rrf_seconds": 0.0,
-        "total_seconds": 1.299,
-        "generation_seconds": 0.007
+        "total_seconds": 0.667,
+        "generation_seconds": 0.002
       }
     },
     {
@@ -187,42 +187,42 @@
       "reference_answer": "The AI-based Solar Optimization System used ESP32 and sensors for real-time data simulation, machine learning predictions through Flask APIs, and a cloud-based ThingsBoard dashboard.",
       "generated_answer": "an AI- based Solar Optimization System, implementing a complete workflow from real -time data simulation using ESP32 and sensors, to model predictions via Flask APIs, and visualization on a cloud-based ThingsBoard dashboard.(Selected among top 15 teams out of 215+ participants in the L&T Ideation Hackathon for proposing an AI-based Solar Optimization System.) \u2022 Smart India Hackathon 2024 - An AI-based Farmer Agri Solution that personalizes farmers itineraries using hybrid recommendation sy",
       "retrieved_chunks": [
-        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
         "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-6",
-        "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-5",
         "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-6",
-        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-7"
+        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
+        "a863a03b-3f51-4aff-9875-731870aede3b-chunk-5",
+        "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-5"
       ],
       "sources": [
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 2,
-          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
-          "rrf_score": 0.09109730848861283
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 2,
           "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-6",
-          "rrf_score": 0.09109730848861283
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 2,
-          "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-5",
-          "rrf_score": 0.08712121212121213
+          "rrf_score": 0.09523809523809523
         },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 2,
           "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-6",
-          "rrf_score": 0.08712121212121213
+          "rrf_score": 0.09090909090909091
         },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 2,
-          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-7",
-          "rrf_score": 0.08
+          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
+          "rrf_score": 0.08347826086956522
+        },
+        {
+          "document": "Ganta Tejaswini_AI&DS_VIT (2).pdf",
+          "page": 2,
+          "chunk_id": "a863a03b-3f51-4aff-9875-731870aede3b-chunk-5",
+          "rrf_score": 0.08347826086956522
+        },
+        {
+          "document": "Ganta Tejjuuuuu resume.pdf",
+          "page": 2,
+          "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-5",
+          "rrf_score": 0.041666666666666664
         }
       ],
       "metrics": {
@@ -232,12 +232,12 @@
         "grounding_score": 0.9836065573770492
       },
       "timing": {
-        "embedding_seconds": 1.771,
-        "bm25_seconds": 0.032,
-        "knn_seconds": 0.103,
+        "embedding_seconds": 1.053,
+        "bm25_seconds": 0.015,
+        "knn_seconds": 0.066,
         "rrf_seconds": 0.0,
-        "total_seconds": 1.906,
-        "generation_seconds": 0.014
+        "total_seconds": 1.133,
+        "generation_seconds": 0.007
       }
     },
     {
@@ -245,42 +245,42 @@
       "reference_answer": "The Chronic Kidney Disease project involved an ML model that analyzed patient reports to detect Chronic Kidney Disease.",
       "generated_answer": "It enhances tourism experiences by ensuring efficiency, customization, and user satisfaction. (Sep 2024) \u2022 Innovate\u201924 - Developed a machine learning model to analyse patient report and detect Chronic Kidney diseases, leveraging result processing and classification techniques. (Aug 2024) CO-CURRICULAR ACTIVITIES: \u2022 Event Co-ordinator: TCS Quiz Took initiative to pl",
       "retrieved_chunks": [
-        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
         "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-7",
-        "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-5",
         "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-7",
-        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-6"
+        "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
+        "a863a03b-3f51-4aff-9875-731870aede3b-chunk-4",
+        "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-5"
       ],
       "sources": [
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 2,
-          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
-          "rrf_score": 0.09109730848861283
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 2,
           "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-7",
-          "rrf_score": 0.09109730848861283
-        },
-        {
-          "document": "Ganta Tejjuuuuu resume.pdf",
-          "page": 2,
-          "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-5",
-          "rrf_score": 0.08712121212121213
+          "rrf_score": 0.09523809523809523
         },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 2,
           "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-7",
-          "rrf_score": 0.08712121212121213
+          "rrf_score": 0.09090909090909091
         },
         {
           "document": "Ganta Tejjuuuuu resume.pdf",
           "page": 2,
-          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-6",
-          "rrf_score": 0.04
+          "chunk_id": "8520cfdd-6fde-431f-a822-ce3771dce572-chunk-5",
+          "rrf_score": 0.08514492753623187
+        },
+        {
+          "document": "Ganta Tejaswini_AI&DS_VIT (2).pdf",
+          "page": 2,
+          "chunk_id": "a863a03b-3f51-4aff-9875-731870aede3b-chunk-4",
+          "rrf_score": 0.08347826086956522
+        },
+        {
+          "document": "Ganta Tejjuuuuu resume.pdf",
+          "page": 2,
+          "chunk_id": "f82b3373-d630-467c-93eb-4db0608b40c0-chunk-5",
+          "rrf_score": 0.08166666666666667
         }
       ],
       "metrics": {
@@ -290,12 +290,12 @@
         "grounding_score": 1.0
       },
       "timing": {
-        "embedding_seconds": 1.65,
-        "bm25_seconds": 0.025,
-        "knn_seconds": 0.096,
+        "embedding_seconds": 0.898,
+        "bm25_seconds": 0.012,
+        "knn_seconds": 0.069,
         "rrf_seconds": 0.0,
-        "total_seconds": 1.772,
-        "generation_seconds": 0.007
+        "total_seconds": 0.98,
+        "generation_seconds": 0.008
       }
     }
   ]
