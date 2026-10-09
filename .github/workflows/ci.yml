@@ -1,3 +1,4 @@
+```yaml
 name: CI
 
 on:
@@ -67,6 +68,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Initialize database schema
+        working-directory: backend
+        env:
+          ELASTICSEARCH_URL: http://localhost:9200
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: enterprise_ai
+          POSTGRES_USER: enterprise_user
+          POSTGRES_PASSWORD: enterprise_password
+          REDIS_URL: redis://localhost:6379/0
+          JWT_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
+          JWT_ALGORITHM: HS256
+          JWT_ACCESS_TOKEN_EXPIRE_MINUTES: 60
+          LLM_PROVIDER: extractive
+          CORS_ORIGINS: http://localhost:5173
+        run: |
+          python create_tables.py
+
       - name: Run backend tests
         working-directory: backend
         env:
@@ -107,3 +126,4 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: npm run build
+```
