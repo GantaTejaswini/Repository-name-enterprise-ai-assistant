@@ -22,7 +22,7 @@ jobs:
           POSTGRES_USER: enterprise_user
           POSTGRES_PASSWORD: enterprise_password
         ports:
-          - 5432:5432
+          - "5432:5432"
         options: >-
           --health-cmd="pg_isready -U enterprise_user -d enterprise_ai"
           --health-interval=10s
@@ -33,10 +33,10 @@ jobs:
         image: docker.elastic.co/elasticsearch/elasticsearch:9.1.4
         env:
           discovery.type: single-node
-          xpack.security.enabled: false
-          ES_JAVA_OPTS: -Xms1g -Xmx1g
+          xpack.security.enabled: "false"
+          ES_JAVA_OPTS: "-Xms1g -Xmx1g"
         ports:
-          - 9200:9200
+          - "9200:9200"
         options: >-
           --health-cmd="curl -fs http://localhost:9200/_cluster/health"
           --health-interval=10s
@@ -46,7 +46,7 @@ jobs:
       redis:
         image: redis:7-alpine
         ports:
-          - 6379:6379
+          - "6379:6379"
         options: >-
           --health-cmd="redis-cli ping"
           --health-interval=10s
@@ -73,14 +73,14 @@ jobs:
         env:
           ELASTICSEARCH_URL: http://localhost:9200
           POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
+          POSTGRES_PORT: "5432"
           POSTGRES_DB: enterprise_ai
           POSTGRES_USER: enterprise_user
           POSTGRES_PASSWORD: enterprise_password
           REDIS_URL: redis://localhost:6379/0
           JWT_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
           JWT_ALGORITHM: HS256
-          JWT_ACCESS_TOKEN_EXPIRE_MINUTES: 60
+          JWT_ACCESS_TOKEN_EXPIRE_MINUTES: "60"
           LLM_PROVIDER: extractive
           CORS_ORIGINS: http://localhost:5173
         run: |
@@ -91,14 +91,14 @@ jobs:
         env:
           ELASTICSEARCH_URL: http://localhost:9200
           POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
+          POSTGRES_PORT: "5432"
           POSTGRES_DB: enterprise_ai
           POSTGRES_USER: enterprise_user
           POSTGRES_PASSWORD: enterprise_password
           REDIS_URL: redis://localhost:6379/0
           JWT_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
           JWT_ALGORITHM: HS256
-          JWT_ACCESS_TOKEN_EXPIRE_MINUTES: 60
+          JWT_ACCESS_TOKEN_EXPIRE_MINUTES: "60"
           LLM_PROVIDER: extractive
           CORS_ORIGINS: http://localhost:5173
         run: |
