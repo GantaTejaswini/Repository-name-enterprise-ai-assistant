@@ -20,7 +20,7 @@ dist/
 build/
 *.egg-info/
 # Models / large ML files
-models/
+/models/
 *.bin
 *.safetensors
 *.pt
