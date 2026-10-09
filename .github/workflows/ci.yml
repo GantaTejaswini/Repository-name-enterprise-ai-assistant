@@ -70,7 +70,7 @@ steps:
 
   - name: Initialize database schema
     working-directory: backend
-    env: &backend-env
+    env: 
       ELASTICSEARCH_URL: http://localhost:9200
       POSTGRES_HOST: localhost
       POSTGRES_PORT: "5432"
