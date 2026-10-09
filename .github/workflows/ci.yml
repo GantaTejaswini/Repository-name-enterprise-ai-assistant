@@ -1,128 +1,146 @@
-
 name: CI
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+push:
+branches:
+- main
+pull_request:
+branches:
+- main
 
 jobs:
-  backend:
-    name: Backend Tests
-    runs-on: ubuntu-latest
+backend:
+name: Backend Tests
+runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_DB: enterprise_ai
-          POSTGRES_USER: enterprise_user
-          POSTGRES_PASSWORD: enterprise_password
-        ports:
-          - "5432:5432"
-        options: >-
-          --health-cmd="pg_isready -U enterprise_user -d enterprise_ai"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+```
+services:
+  postgres:
+    image: postgres:17
+    env:
+      POSTGRES_DB: enterprise_ai
+      POSTGRES_USER: enterprise_user
+      POSTGRES_PASSWORD: enterprise_password
+    ports:
+      - "5432:5432"
+    options: >-
+      --health-cmd="pg_isready -U enterprise_user -d enterprise_ai"
+      --health-interval=10s
+      --health-timeout=5s
+      --health-retries=5
 
-      elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:9.1.4
-        env:
-          discovery.type: single-node
-          xpack.security.enabled: "false"
-          ES_JAVA_OPTS: "-Xms1g -Xmx1g"
-        ports:
-          - "9200:9200"
-        options: >-
-          --health-cmd="curl -fs http://localhost:9200/_cluster/health"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.4
+    env:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    ports:
+      - "9200:9200"
+    options: >-
+      --health-cmd="curl -fs http://localhost:9200/_cluster/health"
+      --health-interval=10s
+      --health-timeout=5s
+      --health-retries=10
 
-      redis:
-        image: redis:7-alpine
-        ports:
-          - "6379:6379"
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    options: >-
+      --health-cmd="redis-cli ping"
+      --health-interval=10s
+      --health-timeout=5s
+      --health-retries=5
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+  - name: Set up Python
+    uses: actions/setup-python@v5
+    with:
+      python-version: "3.12"
 
-      - name: Install backend dependencies
-        working-directory: backend
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+  - name: Install backend dependencies
+    working-directory: backend
+    run: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
 
-      - name: Initialize database schema
-        working-directory: backend
-        env:
-          ELASTICSEARCH_URL: http://localhost:9200
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: "5432"
-          POSTGRES_DB: enterprise_ai
-          POSTGRES_USER: enterprise_user
-          POSTGRES_PASSWORD: enterprise_password
-          REDIS_URL: redis://localhost:6379/0
-          JWT_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
-          JWT_ALGORITHM: HS256
-          JWT_ACCESS_TOKEN_EXPIRE_MINUTES: "60"
-          LLM_PROVIDER: extractive
-          CORS_ORIGINS: http://localhost:5173
-        run: |
-          python create_tables.py
+  - name: Initialize database schema
+    working-directory: backend
+    env: &backend-env
+      ELASTICSEARCH_URL: http://localhost:9200
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: enterprise_ai
+      POSTGRES_USER: enterprise_user
+      POSTGRES_PASSWORD: enterprise_password
+      REDIS_URL: redis://localhost:6379/0
+      JWT_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
+      JWT_ALGORITHM: HS256
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: "60"
+      LLM_PROVIDER: extractive
+      CORS_ORIGINS: http://localhost:5173
+    run: python create_tables.py
 
-      - name: Run backend tests
-        working-directory: backend
-        env:
-          ELASTICSEARCH_URL: http://localhost:9200
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: "5432"
-          POSTGRES_DB: enterprise_ai
-          POSTGRES_USER: enterprise_user
-          POSTGRES_PASSWORD: enterprise_password
-          REDIS_URL: redis://localhost:6379/0
-          JWT_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
-          JWT_ALGORITHM: HS256
-          JWT_ACCESS_TOKEN_EXPIRE_MINUTES: "60"
-          LLM_PROVIDER: extractive
-          CORS_ORIGINS: http://localhost:5173
-        run: |
-          python -m pytest tests -q
+  - name: Create demo account
+    working-directory: backend
+    env:
+      ELASTICSEARCH_URL: http://localhost:9200
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: enterprise_ai
+      POSTGRES_USER: enterprise_user
+      POSTGRES_PASSWORD: enterprise_password
+      REDIS_URL: redis://localhost:6379/0
+      JWT_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
+      JWT_ALGORITHM: HS256
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: "60"
+      LLM_PROVIDER: extractive
+      CORS_ORIGINS: http://localhost:5173
+    run: python create_demo_account.py
 
-  frontend:
-    name: Frontend Build
-    runs-on: ubuntu-latest
+  - name: Run backend tests
+    working-directory: backend
+    env:
+      ELASTICSEARCH_URL: http://localhost:9200
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: enterprise_ai
+      POSTGRES_USER: enterprise_user
+      POSTGRES_PASSWORD: enterprise_password
+      REDIS_URL: redis://localhost:6379/0
+      JWT_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
+      JWT_ALGORITHM: HS256
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: "60"
+      LLM_PROVIDER: extractive
+      CORS_ORIGINS: http://localhost:5173
+    run: python -m pytest tests -q
+```
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+frontend:
+name: Frontend Build
+runs-on: ubuntu-latest
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
+```
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v4
 
-      - name: Install frontend dependencies
-        working-directory: frontend
-        run: npm ci
+  - name: Set up Node.js
+    uses: actions/setup-node@v4
+    with:
+      node-version: "22"
+      cache: npm
+      cache-dependency-path: frontend/package-lock.json
 
-      - name: Build frontend
-        working-directory: frontend
-        run: npm run build
+  - name: Install frontend dependencies
+    working-directory: frontend
+    run: npm ci
+
+  - name: Build frontend
+    working-directory: frontend
+    run: npm run build
+```
