@@ -13,7 +13,6 @@ backend:
 name: Backend Tests
 runs-on: ubuntu-latest
 
-```
 services:
   postgres:
     image: postgres:17
@@ -118,13 +117,11 @@ steps:
       LLM_PROVIDER: extractive
       CORS_ORIGINS: http://localhost:5173
     run: python -m pytest tests -q
-```
 
 frontend:
 name: Frontend Build
 runs-on: ubuntu-latest
 
-```
 steps:
   - name: Checkout repository
     uses: actions/checkout@v4
@@ -143,4 +140,3 @@ steps:
   - name: Build frontend
     working-directory: frontend
     run: npm run build
-```
